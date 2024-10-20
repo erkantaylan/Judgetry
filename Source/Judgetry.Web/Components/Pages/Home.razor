@@ -1,7 +1,80 @@
 ﻿@page "/"
+@using Judgetry.Web.Database
+@using Judgetry.Web.Database.Dtos
+@using Microsoft.EntityFrameworkCore
+@inject UnitOfWork UnitOfWork
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Okuma Takibi ve Cezalar</h1>
 
-Welcome to your new app.
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header bg-danger text-white">
+                    <h2 class="card-title">Okumayanlar ve Cezalar</h2>
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>İsim</th>
+                            <th>Tarih</th>
+                            <th>Ceza Miktarı (TL)</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        @foreach (User user in UnitOfWork.Context.Users)
+                        {
+                        <tr>
+                            <td>@user.DisplayName</td>
+                            <td>@user.PenaltyResetDate.ToOffset(TimeSpan.FromHours(3)).ToString("d")</td>
+                            <td>@UnitOfWork.CalculateUnreadDays(user, DateTimeOffset.UtcNow)</td>
+                        </tr>
+                        }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h2 class="card-title">Okuyanlar</h2>
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>İsim</th>
+                            <th>Tarih</th>
+                            <th>Kitap Adı</th>
+                            <th>Okunan Sayfa</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        @foreach (ReadingEntry entry in UnitOfWork.Context.Entries.Include(dto => dto.User))
+                        {
+                            <tr>
+                                <td>@entry.User!.DisplayName</td>
+                                <td>@entry.ReadDate.ToString("M")</td>
+                                <td>@entry.Book</td>
+                                <td>@entry.PageRead</td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+</div>

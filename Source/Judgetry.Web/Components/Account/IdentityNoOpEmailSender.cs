@@ -1,4 +1,5 @@
 using Judgetry.Web.Database;
+using Judgetry.Web.Database.Dtos;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 

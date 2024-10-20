@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using System.Security.Claims;
 using Judgetry.Web.Database;
+using Judgetry.Web.Database.Dtos;
 
 namespace Judgetry.Web.Components.Account
 {

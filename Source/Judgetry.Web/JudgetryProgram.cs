@@ -2,6 +2,7 @@ using Judgetry.Core.Framework;
 using Judgetry.Web.Components;
 using Judgetry.Web.Components.Account;
 using Judgetry.Web.Database;
+using Judgetry.Web.Database.Dtos;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 
@@ -12,6 +13,8 @@ public class JudgetryProgram
     public static void Main(string[] args)
     {
         var microApp = new MicroApp(args);
+
+        microApp.RegisterApiDefaults();
 
         microApp.Register(
             builder =>
@@ -33,9 +36,6 @@ public class JudgetryProgram
                                 options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
                             })
                        .AddIdentityCookies();
-
-                builder.AddNpgsqlDbContext<JudgetryDbContext>("cs-judgetry");
-                builder.Services.AddMigration<JudgetryDbContext>();
 
                 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -67,6 +67,15 @@ public class JudgetryProgram
 
                 // Add additional endpoints required by the Identity /Account Razor components.
                 app.MapAdditionalIdentityEndpoints();
+            });
+
+        microApp.RegisterBuilder(
+            builder =>
+            {
+                builder.AddNpgsqlDbContext<JudgetryDbContext>("cs-judgetry");
+                builder.Services.AddMigration<JudgetryDbContext, JudgetrySeeds>();
+                //builder.Services.AddMigration<JudgetryDbContext>();
+                builder.Services.AddScoped<UnitOfWork>();
             });
 
         microApp.Run();

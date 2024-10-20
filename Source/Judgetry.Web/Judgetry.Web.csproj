@@ -28,8 +28,4 @@
       </Compile>
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Database\Migrations\" />
-    </ItemGroup>
-
 </Project>

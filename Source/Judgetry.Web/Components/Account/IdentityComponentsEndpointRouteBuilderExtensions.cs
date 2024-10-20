@@ -3,6 +3,7 @@ using System.Text.Json;
 using Judgetry.Web.Components.Account.Pages;
 using Judgetry.Web.Components.Account.Pages.Manage;
 using Judgetry.Web.Database;
+using Judgetry.Web.Database.Dtos;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Http.Extensions;
