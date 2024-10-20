@@ -1,13 +1,32 @@
 ﻿@page "/"
 @using Judgetry.Web.Database
 @using Judgetry.Web.Database.Dtos
-@using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Authorization
 @inject UnitOfWork UnitOfWork
+@inject AuthenticationStateProvider AuthStateProvider;
+@attribute [Authorize]
 
 <PageTitle>Home</PageTitle>
 
 <div class="container mt-5">
     <h1 class="text-center mb-4">Okuma Takibi ve Cezalar</h1>
+
+    <div class="mt-3 mb-3">
+        <div class="row row-cols-lg-auto g-3 align-items-center">
+            <div class="col-12">
+                <input type="text" class="form-control" @bind="book" id="bookName" name="bookName" placeholder="Book Name" required>
+            </div>
+            <div class="col-12">
+                <input type="number" class="form-control" @bind="pageRead" id="pageCount" name="pageCount" placeholder="Page Count" required min="1">
+            </div>
+            <div class="col-12">
+                <input type="date" class="form-control" @bind="readDate" id="readDate" name="readDate" required>
+            </div>
+            <div class="col-12">
+                <button type="submit" @onclick="OnAdd" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
 
     <div class="row">
         <div class="col-md-6 mb-4">
@@ -26,13 +45,13 @@
                         </thead>
                         <tbody>
 
-                        @foreach (User user in UnitOfWork.Context.Users)
+                        @foreach (Penalty penalty in penalties)
                         {
-                        <tr>
-                            <td>@user.DisplayName</td>
-                            <td>@user.PenaltyResetDate.ToOffset(TimeSpan.FromHours(3)).ToString("d")</td>
-                            <td>@UnitOfWork.CalculateUnreadDays(user, DateTimeOffset.UtcNow)</td>
-                        </tr>
+                            <tr>
+                                <td>@penalty.DisplayName</td>
+                                <td>@penalty.ResetDate</td>
+                                <td>@penalty.Price</td>
+                            </tr>
                         }
 
                         </tbody>
@@ -41,7 +60,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="row">
         <div class="col-md-6 mb-4">
             <div class="card">
@@ -60,7 +79,7 @@
                         </thead>
 
                         <tbody>
-                        @foreach (ReadingEntry entry in UnitOfWork.Context.Entries.Include(dto => dto.User))
+                        @foreach (ReadingEntry entry in readings)
                         {
                             <tr>
                                 <td>@entry.User!.DisplayName</td>
@@ -76,5 +95,5 @@
         </div>
     </div>
 
-    
+
 </div>

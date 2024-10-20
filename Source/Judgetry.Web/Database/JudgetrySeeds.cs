@@ -6,6 +6,8 @@ public class JudgetrySeeds : IDbSeeder<JudgetryDbContext>
 {
     public async Task SeedAsync(JudgetryDbContext context)
     {
+        return;
+        
         var guid1 = Guid.NewGuid();
 
         DateTimeOffset.UtcNow.Deconstruct(out DateOnly date, out _, out _);

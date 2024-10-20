@@ -1,15 +1,16 @@
 using Judgetry.Core.Database.Models;
 using Judgetry.Web.Database.Dtos;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Judgetry.Web.Database;
 
-public sealed class JudgetryDbContext : DbContext
+public sealed class JudgetryDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
 {
     public JudgetryDbContext(DbContextOptions<JudgetryDbContext> options) : base(options)
     {
-        bool canConnect = Database.CanConnect();
     }
 
     public DbSet<User> Users { get; set; }

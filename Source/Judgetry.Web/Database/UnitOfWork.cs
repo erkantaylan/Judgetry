@@ -13,14 +13,14 @@ public class UnitOfWork
 
     public JudgetryDbContext Context { get; }
 
-    public async Task<EntityEntry<ReadingEntry>> AddReadingEntryAsync(User user, string book, uint pageRead, DateTimeOffset date)
+    public async Task<EntityEntry<ReadingEntry>> AddReadingEntryAsync(User user, string book, uint pageRead, DateTimeOffset readDate)
     {
         var entry = new ReadingEntry
         {
             UserId = user.Id,
             Book = book,
             PageRead = pageRead,
-            ReadDate = date
+            ReadDate = readDate.Date.ToUniversalTime()
         };
         EntityEntry<ReadingEntry> entity = await Context.Entries.AddAsync(entry);
         await Context.SaveChangesAsync();
@@ -36,22 +36,19 @@ public class UnitOfWork
         return await Context.SaveChangesAsync();
     }
 
-    public int CalculateUnreadDays(User user, DateTimeOffset date)
+    public async Task<int> CalculateUnreadDaysAsync(User user, DateTimeOffset date)
     {
         IQueryable<DateTimeOffset> dateTimeOffsets = Context.Entries
                                                             .Where(dto => dto.UserId == user.Id)
                                                             .Where(
                                                                  dto => dto.ReadDate.Date >= user.PenaltyResetDate.Date
-                                                                     && dto.ReadDate.Date <= date.Date.Date)
+                                                                     && dto.ReadDate.Date <= date.Date)
                                                             .Select(dto => dto.ReadDate)
                                                             .Distinct();
 
-        string queryString = dateTimeOffsets.ToQueryString();
+        List<DateTimeOffset> offsets = await dateTimeOffsets.ToListAsync();
 
-        List<DateTimeOffset> offsets = dateTimeOffsets
-           .ToList();
-
-        int readDayCount = offsets.Count();
+        int readDayCount = offsets.Count;
 
         int totalDays = (date.Date - user.PenaltyResetDate.Date).Days + 1;
         int unreadDays = totalDays - readDayCount;

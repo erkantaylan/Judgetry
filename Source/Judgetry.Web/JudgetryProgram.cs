@@ -72,7 +72,10 @@ public class JudgetryProgram
         microApp.RegisterBuilder(
             builder =>
             {
-                builder.AddNpgsqlDbContext<JudgetryDbContext>("cs-judgetry");
+                builder.AddNpgsqlDbContext<JudgetryDbContext>(
+                    "cs-judgetry",
+                    configureDbContextOptions: dbOptions => dbOptions.EnableDetailedErrors()
+                                                                     .EnableSensitiveDataLogging());
                 builder.Services.AddMigration<JudgetryDbContext, JudgetrySeeds>();
                 //builder.Services.AddMigration<JudgetryDbContext>();
                 builder.Services.AddScoped<UnitOfWork>();
