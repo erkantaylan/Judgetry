@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <UserSecretsId>aspnet-Judgetry.Web-7a93f814-c0d6-4e5f-a664-4501be2f6b5d</UserSecretsId>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <IsAspireSharedProject>true</IsAspireSharedProject>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL"/>
+        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore"/>
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Judgetry.Core\Judgetry.Core.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Include="..\Shared\ActivityExtensions.cs">
+        <Link>Shared\ActivityExtensions.cs</Link>
+      </Compile>
+      <Compile Include="..\Shared\MigrateDbContextExtensions.cs">
+        <Link>Shared\MigrateDbContextExtensions.cs</Link>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Database\Migrations\" />
+    </ItemGroup>
+
+</Project>
