@@ -25,7 +25,11 @@ public partial class HomePage
             foreach (User user in users)
             {
                 decimal price = await UnitOfWork.CalculateUnreadDaysAsync(user, DateTimeOffset.UtcNow) * 1;
-                var penalty = new Penalty(user.DisplayName, user.PenaltyResetDate.Humanize(culture: new CultureInfo("TR-tr")), price);
+                //string humanize = user.PenaltyResetDate.Humanize(culture: new CultureInfo("TR-tr"));
+                string humanize = user.PenaltyResetDate.ToString("D");
+                
+                var penalty = new Penalty(user.DisplayName, humanize, price);
+                
                 penalties.Add(penalty);
             }
         }

@@ -15,12 +15,14 @@ public class UnitOfWork
 
     public async Task<EntityEntry<ReadingEntry>> AddReadingEntryAsync(User user, string book, uint pageRead, DateTimeOffset readDate)
     {
+        var datetime = new DateTimeOffset(readDate.Year, readDate.Month, readDate.Day, 0, 0, 0, TimeSpan.Zero);
+        
         var entry = new ReadingEntry
         {
             UserId = user.Id,
             Book = book,
             PageRead = pageRead,
-            ReadDate = readDate.Date.ToUniversalTime()
+            ReadDate = datetime
         };
         EntityEntry<ReadingEntry> entity = await Context.Entries.AddAsync(entry);
         await Context.SaveChangesAsync();
