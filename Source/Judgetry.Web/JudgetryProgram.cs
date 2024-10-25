@@ -40,7 +40,7 @@ public class JudgetryProgram
                 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
                 builder.Services
-                       .AddIdentityCore<User>(options => options.SignIn.RequireConfirmedAccount = true)
+                       .AddIdentityCore<User>(options => options.SignIn.RequireConfirmedAccount = false)
                        .AddEntityFrameworkStores<JudgetryDbContext>()
                        .AddSignInManager()
                        .AddDefaultTokenProviders();
@@ -67,6 +67,7 @@ public class JudgetryProgram
 
                 // Add additional endpoints required by the Identity /Account Razor components.
                 app.MapAdditionalIdentityEndpoints();
+                
             });
 
         microApp.RegisterBuilder(
@@ -79,6 +80,7 @@ public class JudgetryProgram
                 builder.Services.AddMigration<JudgetryDbContext, JudgetrySeeds>();
                 //builder.Services.AddMigration<JudgetryDbContext>();
                 builder.Services.AddScoped<UnitOfWork>();
+                
             });
 
         microApp.Run();
