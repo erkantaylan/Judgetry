@@ -4,6 +4,7 @@
         <UserSecretsId>aspnet-Judgetry.Web-7a93f814-c0d6-4e5f-a664-4501be2f6b5d</UserSecretsId>
         <ImplicitUsings>enable</ImplicitUsings>
         <IsAspireSharedProject>true</IsAspireSharedProject>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
@@ -26,6 +27,12 @@
       <Compile Include="..\Shared\MigrateDbContextExtensions.cs">
         <Link>Shared\MigrateDbContextExtensions.cs</Link>
       </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
     </ItemGroup>
 
 </Project>

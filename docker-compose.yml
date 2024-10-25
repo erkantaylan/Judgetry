@@ -1,0 +1,44 @@
+﻿volumes:
+  volume_pgadmin:
+  volume_judgetry:
+
+services:
+  judgetry.web:
+    image: judgetry.web
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+    ports:
+      - '20000:8080'
+    build:
+      context: .
+      dockerfile: Source/Judgetry.Web/Dockerfile
+
+  db-judgetry:
+    image: postgres:11
+    restart: always
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_NON_ROOT_USER
+      - POSTGRES_NON_ROOT_PASSWORD
+      - POSTGRES_HOST_AUTH_METHOD=trust    
+    healthcheck:
+      test: [ 'CMD-SHELL', 'pg_isready -h localhost -U ${POSTGRES_USER} -d ${POSTGRES_DB}' ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - volume_judgetry:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    ports:
+      - "20001:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL
+      - PGADMIN_DEFAULT_PASSWORD
+    volumes:
+      - volume_pgadmin:/var/lib/pgadmin
+    
